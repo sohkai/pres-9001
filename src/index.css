@@ -1,0 +1,23 @@
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+body {
+  height: 0;
+  min-height: 100vh;
+}
+html, body {
+  overflow: hidden;
+}
+body, ul, p, h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+button, select, input, textarea, h1, h2, h3, h4, h5, h6 {
+  font-size: inherit;
+  font-family: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+a, button, select, input, textarea {
+  color: inherit;
+}
