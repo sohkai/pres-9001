@@ -5,10 +5,6 @@ import { listen } from './recognition'
 import { speak } from './voice'
 import { noop } from './utils'
 
-// TODO:
-//   - add progress bar at start
-//   - Show icon when listening to response
-
 const FAILURE_TO_ANNOY = 10
 
 const globalState = {
@@ -16,11 +12,60 @@ const globalState = {
   listening: false,
   speaking: false,
   failures: 0,
+  listeningIcon: null,
 }
 
-function begin() {
-  console.log('Beginning interaction')
+function awaken() {
+  console.log('Awakening')
   globalState.started = true
+
+  const getLoaderTime = () =>
+    Math.min(500, Math.max(Math.random() * 2000, 1500))
+  const getDimTime = () =>
+    Math.min(8000, Math.max(Math.random() * 12000, 10000))
+
+  const loaders = document.body.querySelectorAll('.loader')
+  let currentLoader = 0
+  ;(function loadNext() {
+    setTimeout(() => {
+      loaders[currentLoader++].classList.add('visible')
+
+      if (currentLoader < loaders.length) {
+        loadNext()
+        return
+      }
+
+      // Loaded everything, awaken
+      setTimeout(() => {
+        loaders.forEach(loader => loader.classList.remove('visible'))
+
+        setTimeout(() => {
+          const bg = document.body.querySelector('.bg')
+          bg.classList.add('visible')
+
+          setTimeout(() => {
+            // Finally begin the interaction
+            beginInteraction()
+
+            const dim = () => {
+              setTimeout(() => {
+                bg.classList.add('dim')
+                setTimeout(() => {
+                  bg.classList.remove('dim')
+                  dim()
+                }, 2500)
+              }, getDimTime())
+            }
+            dim()
+          }, 1000)
+        }, 1250)
+      }, getLoaderTime() * 1.75)
+    }, getLoaderTime())
+  })()
+}
+
+function beginInteraction() {
+  console.log('Beginning interaction')
 
   let sceneIndex = 0
   function nextScene() {
@@ -137,6 +182,10 @@ function listenForInput(phraseList, onresult = noop) {
     return
   }
 
+  if (globalState.listeningIcon) {
+    globalState.listeningIcon.classList.add('visible')
+  }
+
   let userResponded = false
   const handleResponse = (...args) => {
     userResponded = true
@@ -151,6 +200,9 @@ function listenForInput(phraseList, onresult = noop) {
     onend: () => {
       console.log('Finished listening for input')
       globalState.listening = false
+      if (globalState.listeningIcon) {
+        globalState.listeningIcon.classList.remove('visible')
+      }
 
       if (!userResponded) {
         // Give feedback to user that they need to respond
@@ -237,7 +289,8 @@ function handleDelay(delay = {}, onend) {
 window.onload = () => {
   window.addEventListener('click', () => {
     if (!globalState.started) {
-      begin()
+      awaken()
     }
   })
+  globalState.listeningIcon = document.querySelector('.listen')
 }

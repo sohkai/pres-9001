@@ -21,3 +21,48 @@ button, select, input, textarea, h1, h2, h3, h4, h5, h6 {
 a, button, select, input, textarea {
   color: inherit;
 }
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bg {
+  min-height: 100vh;
+  min-width: 100vh;
+  background: no-repeat center url(/src/assets/pres-9001.png),
+    black !important;
+  opacity: 0;
+  transition: opacity 2.25s cubic-bezier(0.5, 0.18, 0.5, 1.06);
+}
+.loaders {
+  position: absolute;
+}
+.loader {
+  display: inline-block;
+  font-size: 20px;
+  background: white;
+  padding: 10px;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+.loader + .loader {
+  margin-left: 5px;
+}
+.listen {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  height: 10px;
+  width: 10px;
+  border-radius: 50%;
+  background: red;
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+.visible {
+  opacity: 1;
+}
+.dim {
+  opacity: 0.5;
+}
