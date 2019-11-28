@@ -166,7 +166,9 @@ function sceneLoop(scene, nextScene) {
 function finish() {
   console.log('Finishing interaction')
 
-  // TODO: request deployment on server
+  fetch('http://localhost:9001/initiate-sequence', {
+    method: 'POST',
+  })
 
   synthVoice(
     'Thank you for a very enjoyable launch. Goodbye, and best of luck.'
