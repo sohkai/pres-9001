@@ -9,7 +9,9 @@ app.use(express.static('build'))
 app.post('/initiate-sequence', function(req, res) {
   console.log('          ... Initiating deployment sequence ...')
   console.log()
-  execute(`cd src && ls`, { stdio: 'inherit' })
+  console.log('          ... Connecting private key ...')
+  console.log()
+  execute(`cd deploy && npm run deploy:court:mainnet`, { stdio: 'inherit' })
   res.send()
 })
 

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install": "git submodule update && cd deploy/ && npm install",
     "lint": "eslint ./src",
     "dev": "parcel serve index.html -p 9001 --out-dir build/",
     "build": "parcel build index.html --out-dir build/",
