@@ -7,8 +7,6 @@ import { noop } from './utils'
 
 // TODO:
 //   - add progress bar at start
-//   - click to begin
-//   - SAL image
 //   - Show icon when listening to response
 
 const FAILURE_TO_ANNOY = 10
@@ -22,6 +20,7 @@ const globalState = {
 
 function begin() {
   console.log('Beginning interaction')
+  globalState.started = true
 
   let sceneIndex = 0
   function nextScene() {
@@ -235,4 +234,10 @@ function handleDelay(delay = {}, onend) {
   startDelay()
 }
 
-setTimeout(begin, 3000)
+window.onload = () => {
+  window.addEventListener('click', () => {
+    if (!globalState.started) {
+      begin()
+    }
+  })
+}
